@@ -7,6 +7,19 @@ Please Download the project through the link below:
 
 The using guidance can be found in the download file.
 
+Please run the code with command as below
+
+```
+cd AS_CodeTest
+
+java -jar AS_JavaFx.jar
+
+or
+
+sh work.sh
+
+```
+
 
 ## Basic Tasks
 This is the basic function which meet the test requirement.
