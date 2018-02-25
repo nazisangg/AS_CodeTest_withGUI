@@ -69,7 +69,7 @@ public class Main extends Application {
         try {
             // Load root layout from fxml file.
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("sample.fxml"));
+            loader.setLocation(Main.class.getResource("course.fxml"));
             // Show the scene containing the root layout.
             AnchorPane personOverview = (AnchorPane) loader.load();
             Scene scene = new Scene(personOverview);
