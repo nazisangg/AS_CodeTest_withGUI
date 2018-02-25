@@ -19,6 +19,14 @@ import java.util.List;
 
 public class totalCoursesTableController {
 
+
+/*
+* Annotate the bean of javaFX and connect to course.fxml
+* */
+
+/*
+* Objects points to element in "All Courses" Table.
+* */
     @FXML
     private TableView<TableData_Course> courseTableView;
 
@@ -45,9 +53,9 @@ public class totalCoursesTableController {
 
     }
 
-    /*
-    * Done Map Part
-    * */
+/*
+* Objects points to element in "Courses Done" Table.
+* */
     @FXML
     private TableView<TableData_Course> courseDoneTable;
 
@@ -57,36 +65,41 @@ public class totalCoursesTableController {
     @FXML
     ObservableList<TableData_Course> doneData = FXCollections.observableArrayList();
 
-
+/*
+* Add all controllers to the GUI while init
+* */
     @FXML
     private void initialize() {
         // Initialize the table with the two columns.
-        //System.out.println("init");
         courseNameColumn.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
         doneTableCourseName.setCellValueFactory(cellData -> cellData.getValue().courseNameProperty());
         idColumn.setCellValueFactory(cellData -> cellData.getValue().idProperty().asObject());
 
+        // Add listener to "All Courses" Table column when they are selected
         courseTableView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         this.courseSelected = newValue;
                     }
                 });
+
+        // Add event handler to add button
         addButton.setOnAction((ActionEvent e) -> {
-                    //System.out.println(courseSelected.getCourseModel().getCourseName());
 
                         if (!(courseDone.contains(this.courseSelected.getCourseModel()))) {
                             this.courseDone.add(this.courseSelected.getCourseModel());
                             doneData.add(new TableData_Course(courseSelected.getCourseName(), courseSelected.getId(), courseSelected.getCourseModel()));
-                            //System.out.println(doneData.size());
                             courseDoneTable.setItems(doneData);
                         }
 
                 }
         );
 
+
+        // Add event handler to clear button
         clearButton.setOnAction((ActionEvent e) -> this.resetTable());
 
+        // Add event handler to submit button
         submitButton.setOnAction((ActionEvent e) -> {
             try {
                 this.submitButton_handleclick();
@@ -106,7 +119,7 @@ public class totalCoursesTableController {
     }
 
     /*
-    * add button part
+    * add button Controller
     *
     * */
     private List<CourseModel> courseDone = new ArrayList<>();
@@ -122,7 +135,7 @@ public class totalCoursesTableController {
 
 
     /*
-    * Clear button
+    * Clear button controller
     * */
     @FXML
     private Button clearButton = new Button();
@@ -142,7 +155,7 @@ public class totalCoursesTableController {
     }
 
     /*
-    * Result label
+    * Result label controller
     * */
     @FXML
     private Label resultLabel = new Label();
@@ -182,7 +195,7 @@ public class totalCoursesTableController {
 
 
 /*
-* Submit button
+* Submit button controller
 * */
 
     @FXML

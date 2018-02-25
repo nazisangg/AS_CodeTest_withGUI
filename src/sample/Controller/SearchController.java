@@ -18,23 +18,13 @@ public class SearchController {
         this.targetCourses = targetCourses;
         this.totalCourses = totalCourses;
     }
-    // if the preRequiste has not been searched, add it into targetCourse
-    public void updateTargetCourses(CourseModel course){
-        List<CourseModel> preRequisites = course.getPrerequisite();
-        for(CourseModel preRequisite:preRequisites){
-            if(!this.preRequisiteList.contains(preRequisite)){
-                this.targetCourses.add(preRequisite);
-            }
-        }
-    }
 
-    public void updatePreRequisiteList(CourseModel course){
-        if(!this.preRequisiteList.contains(course)){
-            this.preRequisiteList.add(course);
-        }
-    }
-    // Function Block: Find all possiable courses can be enrolled by providing:
-// All courses; Done courses.
+
+/*
+* Search the topology and find all possiable courses
+* */
+
+    // Return true if all preRequite is done
     public boolean ifCourseCanBeEnroll(CourseModel course){
         boolean enrollJudge = true;
         List<CourseModel> preRequisites = course.getPrerequisite();
@@ -47,6 +37,7 @@ public class SearchController {
         return enrollJudge;
     }
 
+    // If list A contains element which is also contained by list B, delete it from list A
     public List deleteFromList(List list_from, List list_delete){
         Iterator iterator = list_from.iterator();
 
@@ -61,29 +52,27 @@ public class SearchController {
         return list_from;
     }
 
+    // find all possiable courses and return them with a hashmap format
     public HashMap<Integer,List<CourseModel>> findAllCourseOrder(){
-        System.out.println("phohoh"+this.totalCourses.size());
         HashMap<Integer,List<CourseModel>> orderedCourseList = new HashMap<>();
         List<CourseModel> undoneCourses = deleteFromList(this.totalCourses, this.coursesDone);
         int index = 0;
-        System.out.println("here1");
         while (!undoneCourses.isEmpty()){
             List<CourseModel> coursesCanBeEnrolled = courseSearchLoop(undoneCourses);
-            orderedCourseList.put(index,coursesCanBeEnrolled);
-            index++;
-            System.out.println("ooo "+coursesCanBeEnrolled.size());
-            this.coursesDone.addAll(coursesCanBeEnrolled);
-            undoneCourses = deleteFromList(undoneCourses, this.coursesDone);
-            if(index > 50){
+
+            // sometimes some courses can never be enrolled, break the loop then.
+            if(coursesCanBeEnrolled.size() == 0){
                 break;
             }
-            System.out.println(undoneCourses.size()+","+ this.coursesDone.size());
+            orderedCourseList.put(index,coursesCanBeEnrolled);
+            index++;
+            this.coursesDone.addAll(coursesCanBeEnrolled);
+            undoneCourses = deleteFromList(undoneCourses, this.coursesDone);
         }
-        System.out.println(undoneCourses.size());
-        System.out.println("index:"+index);
         return orderedCourseList;
     }
 
+    // for all course have not been learned, record all that can be enrolled.
     public List<CourseModel> courseSearchLoop(List<CourseModel> UndoneCourses){
         List<CourseModel> temporaryList = new ArrayList<>();
         for(CourseModel course: UndoneCourses){

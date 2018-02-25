@@ -3,7 +3,11 @@ package sample.Model;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+* This model contains information of courses including id, course name and prerequisite.
+* */
 public class CourseModel {
+
     private int id;
     private String courseName;
     private List<CourseModel> prerequisite = new ArrayList();

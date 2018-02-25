@@ -17,15 +17,13 @@ import sample.UI.Main;
 
 
 public class CSVController {
-    private File directory = new File("");//设定为当前文件夹
-    String path = directory.getCanonicalPath();
-//    private final String COURSEFILENAME=Thread.currentThread().getContextClassLoader().getResource("/Resource/courses.csv").getPath();
-//    private final String PREREQUISITEFILENAME=Thread.currentThread().getContextClassLoader().getResource("/Resource/prerequisites.csv").getPath();
-//    private final String COURSEFILENAME = path + "/src/sample/Resource/courses.csv";
-//    private final String PREREQUISITEFILENAME = path + "/src/sample/Resource/prerequisites.csv";
 
-    private String COURSEFILENAME = "/courses.csv";
-    private String PREREQUISITEFILENAME = "/prerequisites.csv";
+/*
+* URL Relevant for jar purpose
+* */
+
+    final String COURSEFILENAME = "/courses.csv";
+    final String PREREQUISITEFILENAME = "/prerequisites.csv";
 
 
     public CSVReader getReader(String CSVName) throws Exception{
@@ -33,14 +31,11 @@ public class CSVController {
         return csvReader;
     }
 
+    // find the jar location and return the url of csv files
     public String getPath(String source) throws URISyntaxException {
-//        InputStream is= this.getClass().getResourceAsStream(source);
-        //System.out.println(is.toString());
-        //        String path = Thread.currentThread().getContextClassLoader().getResource(source).getPath();
         CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
         File jarFile = new File(codeSource.getLocation().toURI().getPath());
         String jarDir = jarFile.getParentFile().getPath();
-        //String path = getClass().getResource("prerequisites.csv")+source;
         return (jarDir + source);
     }
 
@@ -56,12 +51,15 @@ public class CSVController {
 
 
 
-    //
+/*
+* Build the reflection between courses and preRequisite
+* */
 
     public void buildCourses() throws IOException {
         int i = 0;
         int j = 0;
         String[] newline;
+        // Build Hashmap with id and courseModel.
         while ((newline = this.csvReader_Course.readNext())!= null){
             if (i>0){
                 String key = newline[0];
@@ -72,6 +70,7 @@ public class CSVController {
             i++;
         }
 
+        // Map preRequisite with courses
         while ((newline = this.csvReader_PreRequisite.readNext())!= null){
             if (j>0){
                 String courseKey = newline[0];
@@ -79,16 +78,21 @@ public class CSVController {
                 CourseModel course = this.courses_Hash.get(courseKey);
                 CourseModel preRequisiteCourseName = this.courses_Hash.get(preRequisiteKey);
                 course.addElementToPreRequisite(preRequisiteCourseName);
-                //System.out.print(courseKey+"; "+ preRequisiteCourseName+"; here\n");
             }
             j++;
         }
     }
 
+/*
+* Getter and Setters
+* */
+
     public HashMap<String, CourseModel> getCourses_Hash() {
         return courses_Hash;
     }
 
+
+    // Get the List of all courses from Hashmap
     public List<CourseModel> getAllCourses(){
         Collection<CourseModel> courseArray = this.courses_Hash.values();
         List<CourseModel> courseList = new ArrayList<>();

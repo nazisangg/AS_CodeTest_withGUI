@@ -6,6 +6,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+/*
+* Model for the data used in the Table from javaFX
+* */
 public class TableData_Course {
     private final StringProperty courseName;
 

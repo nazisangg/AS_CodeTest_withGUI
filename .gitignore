@@ -35,3 +35,6 @@ target/
 #gradle
 .gradle
 build/
+
+#others
+.csv
