@@ -3,6 +3,9 @@ package sample.Controller;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,15 +13,19 @@ import java.util.List;
 
 import au.com.bytecode.opencsv.CSVReader;
 import sample.Model.CourseModel;
-
+import sample.UI.Main;
 
 
 public class CSVController {
     private File directory = new File("");//设定为当前文件夹
     String path = directory.getCanonicalPath();
+//    private final String COURSEFILENAME=Thread.currentThread().getContextClassLoader().getResource("/Resource/courses.csv").getPath();
+//    private final String PREREQUISITEFILENAME=Thread.currentThread().getContextClassLoader().getResource("/Resource/prerequisites.csv").getPath();
+//    private final String COURSEFILENAME = path + "/src/sample/Resource/courses.csv";
+//    private final String PREREQUISITEFILENAME = path + "/src/sample/Resource/prerequisites.csv";
 
-    private final String COURSEFILENAME = path + "/src/sample/Resource/courses.csv";
-    private final String PREREQUISITEFILENAME = path + "/src/sample/Resource/prerequisites.csv";
+    private String COURSEFILENAME = "/courses.csv";
+    private String PREREQUISITEFILENAME = "/prerequisites.csv";
 
 
     public CSVReader getReader(String CSVName) throws Exception{
@@ -26,15 +33,28 @@ public class CSVController {
         return csvReader;
     }
 
-    private CSVReader csvReader_Course = getReader(COURSEFILENAME);
+    public String getPath(String source) throws URISyntaxException {
+//        InputStream is= this.getClass().getResourceAsStream(source);
+        //System.out.println(is.toString());
+        //        String path = Thread.currentThread().getContextClassLoader().getResource(source).getPath();
+        CodeSource codeSource = Main.class.getProtectionDomain().getCodeSource();
+        File jarFile = new File(codeSource.getLocation().toURI().getPath());
+        String jarDir = jarFile.getParentFile().getPath();
+        //String path = getClass().getResource("prerequisites.csv")+source;
+        return (jarDir + source);
+    }
 
-    private CSVReader csvReader_PreRequisite= getReader(PREREQUISITEFILENAME);
+    private CSVReader csvReader_Course = getReader(getPath(COURSEFILENAME));
+
+    private CSVReader csvReader_PreRequisite= getReader(getPath(PREREQUISITEFILENAME));
 
     private HashMap<String, CourseModel> courses_Hash = new HashMap();
 
     public CSVController() throws Exception {
 
     }
+
+
 
     //
 

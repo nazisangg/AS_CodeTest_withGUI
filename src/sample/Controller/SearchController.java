@@ -66,13 +66,21 @@ public class SearchController {
         HashMap<Integer,List<CourseModel>> orderedCourseList = new HashMap<>();
         List<CourseModel> undoneCourses = deleteFromList(this.totalCourses, this.coursesDone);
         int index = 0;
+        System.out.println("here1");
         while (!undoneCourses.isEmpty()){
             List<CourseModel> coursesCanBeEnrolled = courseSearchLoop(undoneCourses);
             orderedCourseList.put(index,coursesCanBeEnrolled);
             index++;
+            System.out.println("ooo "+coursesCanBeEnrolled.size());
             this.coursesDone.addAll(coursesCanBeEnrolled);
             undoneCourses = deleteFromList(undoneCourses, this.coursesDone);
+            if(index > 50){
+                break;
+            }
+            System.out.println(undoneCourses.size()+","+ this.coursesDone.size());
         }
+        System.out.println(undoneCourses.size());
+        System.out.println("index:"+index);
         return orderedCourseList;
     }
 

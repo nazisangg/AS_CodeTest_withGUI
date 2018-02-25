@@ -1,11 +1,9 @@
-package sample;
+package sample.UI;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Controller.CSVController;
 import sample.Controller.SearchController;
@@ -36,6 +34,7 @@ public class Main extends Application {
     private HashMap<String,CourseModel> courseModelHashMap;
 
     private totalCoursesTableController controller = new totalCoursesTableController();
+
 
     public void setUp() throws Exception{
         csvController = new CSVController();
@@ -97,7 +96,7 @@ public class Main extends Application {
         searchController.setCoursesDone(DoneCourses);
         searchController.setTotalCourses(allCourses);
         HashMap<Integer,List<CourseModel>> courseOrder = searchController.findAllCourseOrder();
-        System.out.println("here1");
+        System.out.println("here3");
         for(Integer i = 0; i < courseOrder.size(); i++ ){
             for(CourseModel course: courseOrder.get(i)){
                 text = text + "Level " + i + " " + course.getCourseName() + "\n";
@@ -112,6 +111,8 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
+
+
         launch(args);
     }
 }

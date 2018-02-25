@@ -1,4 +1,4 @@
-package sample;
+package sample.UI;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,12 +7,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
-import sample.Main;
+import sample.UI.Main;
 import sample.Model.CourseModel;
 import sample.Model.TableData_Course;
 import javafx.scene.control.TableView;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -42,19 +41,21 @@ public class totalCoursesTableController {
     @FXML
     private ObservableList<TableData_Course> data;
 
-    public totalCoursesTableController(){
+    public totalCoursesTableController() {
 
     }
-/*
-* Done Map Part
-* */
+
+    /*
+    * Done Map Part
+    * */
     @FXML
     private TableView<TableData_Course> courseDoneTable;
 
     @FXML
     private TableColumn<TableData_Course, String> doneTableCourseName;
 
-    @FXML ObservableList<TableData_Course> doneData = FXCollections.observableArrayList();
+    @FXML
+    ObservableList<TableData_Course> doneData = FXCollections.observableArrayList();
 
 
     @FXML
@@ -67,19 +68,21 @@ public class totalCoursesTableController {
 
         courseTableView.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    if(newValue!=null){
+                    if (newValue != null) {
                         this.courseSelected = newValue;
                     }
                 });
         addButton.setOnAction((ActionEvent e) -> {
-            //System.out.println(courseSelected.getCourseModel().getCourseName());
-            if(!(courseDone.contains(this.courseSelected.getCourseModel()))) {
-                this.courseDone.add(this.courseSelected.getCourseModel());
-                doneData.add(new TableData_Course(courseSelected.getCourseName(), courseSelected.getId(), courseSelected.getCourseModel()));
-                //System.out.println(doneData.size());
-                courseDoneTable.setItems(doneData);
-            }
-        }
+                    //System.out.println(courseSelected.getCourseModel().getCourseName());
+
+                        if (!(courseDone.contains(this.courseSelected.getCourseModel()))) {
+                            this.courseDone.add(this.courseSelected.getCourseModel());
+                            doneData.add(new TableData_Course(courseSelected.getCourseName(), courseSelected.getId(), courseSelected.getCourseModel()));
+                            //System.out.println(doneData.size());
+                            courseDoneTable.setItems(doneData);
+                        }
+
+                }
         );
 
         clearButton.setOnAction((ActionEvent e) -> this.resetTable());
@@ -95,17 +98,17 @@ public class totalCoursesTableController {
     }
 
 
-
     public void setMainApp(Main main) throws Exception {
         this.mainApp = main;
 
         // Add observable list data to the table
         courseTableView.setItems(mainApp.getTotalCourse());
     }
-/*
-* add button part
-*
-* */
+
+    /*
+    * add button part
+    *
+    * */
     private List<CourseModel> courseDone = new ArrayList<>();
 
     private HashMap<String, CourseModel> courseHashMap;
@@ -113,28 +116,34 @@ public class totalCoursesTableController {
     @FXML
     private Button addButton = new Button();
 
-    public void setCourseHashMap(HashMap<String, CourseModel> courseHashMap){
+    public void setCourseHashMap(HashMap<String, CourseModel> courseHashMap) {
         this.courseHashMap = courseHashMap;
     }
 
 
-/*
-* Clear button
-* */
+    /*
+    * Clear button
+    * */
     @FXML
     private Button clearButton = new Button();
 
-    public void resetTable(){
+    public void resetTable() {
         this.courseDone = new ArrayList<>();
         this.doneData = FXCollections.observableArrayList();
         this.text = "";
         this.setValues();
         courseDoneTable.setItems(doneData);
+        courseTableView.getSelectionModel().selectedItemProperty().removeListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        this.courseSelected = newValue;
+                    }
+                });
     }
 
-/*
-* Result label
-* */
+    /*
+    * Result label
+    * */
     @FXML
     private Label resultLabel = new Label();
 
@@ -142,7 +151,7 @@ public class totalCoursesTableController {
 
     private String text;
 
-    public void setValues(){
+    public void setValues() {
         resultLabel.setText(text);
 
     }
@@ -158,14 +167,14 @@ public class totalCoursesTableController {
 
     }
 
-    public List<CourseModel> getAllCourses(){
+    public List<CourseModel> getAllCourses() {
         Collection<CourseModel> courseArray = this.courseHashMap.values();
         List<CourseModel> courseList = new ArrayList<>();
         courseList.addAll(courseArray);
         return courseList;
     }
 
-    public void setTotalCourses(List<CourseModel> totalCourses){
+    public void setTotalCourses(List<CourseModel> totalCourses) {
         this.totalCourses = totalCourses;
 
     }
@@ -177,20 +186,21 @@ public class totalCoursesTableController {
 * */
 
     @FXML
-    private Button submitButton= new Button();
+    private Button submitButton = new Button();
 
     public void submitButton_handleclick() throws Exception {
         this.setText();
         this.setValues();
         courseTableView.getSelectionModel().selectedItemProperty().removeListener(
                 (observable, oldValue, newValue) -> {
-                    if(newValue!=null){
+                    if (newValue != null) {
                         this.courseSelected = newValue;
                     }
                 });
     }
-
-
-
-
 }
+
+
+
+
+
