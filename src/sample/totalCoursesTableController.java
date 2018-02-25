@@ -182,6 +182,12 @@ public class totalCoursesTableController {
     public void submitButton_handleclick() throws Exception {
         this.setText();
         this.setValues();
+        courseTableView.getSelectionModel().selectedItemProperty().removeListener(
+                (observable, oldValue, newValue) -> {
+                    if(newValue!=null){
+                        this.courseSelected = newValue;
+                    }
+                });
     }
 
 
