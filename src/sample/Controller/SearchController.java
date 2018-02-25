@@ -62,6 +62,7 @@ public class SearchController {
     }
 
     public HashMap<Integer,List<CourseModel>> findAllCourseOrder(){
+        System.out.println("phohoh"+this.totalCourses.size());
         HashMap<Integer,List<CourseModel>> orderedCourseList = new HashMap<>();
         List<CourseModel> undoneCourses = deleteFromList(this.totalCourses, this.coursesDone);
         int index = 0;
@@ -85,4 +86,11 @@ public class SearchController {
         return temporaryList;
     }
 
+    public void setCoursesDone(List<CourseModel> coursesDone) {
+        this.coursesDone = coursesDone;
+    }
+
+    public void setTotalCourses(List<CourseModel> totalCourses) {
+        this.totalCourses = totalCourses;
+    }
 }

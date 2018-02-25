@@ -23,18 +23,28 @@ public class Main extends Application {
 
     private List<CourseModel> totalCourse;
 
+    private List<CourseModel> totalCourse_copy;
+
+    private CSVController csvController;
+
     private Stage primaryStage;
 
     private ObservableList<TableData_Course> courseData = FXCollections.observableArrayList();
+
+    private SearchController searchController;
 
     private HashMap<String,CourseModel> courseModelHashMap;
 
     private totalCoursesTableController controller = new totalCoursesTableController();
 
     public void setUp() throws Exception{
-        CSVController csvController = new CSVController();
+        csvController = new CSVController();
         csvController.buildCourses();
         this.totalCourse = csvController.getAllCourses();
+        System.out.println("lalal"+ csvController.getAllCourses().size());
+        List<CourseModel> tagetList = new ArrayList<>();
+        List<CourseModel> DoneCourses = new ArrayList<>();
+        this.searchController = new SearchController(DoneCourses,tagetList,totalCourse);
         this.courseModelHashMap = csvController.getCourses_Hash();
     }
 
@@ -48,7 +58,6 @@ public class Main extends Application {
 
     public ObservableList<TableData_Course> getTotalCourse() throws Exception{
 
-        this.setUp();
         for(CourseModel course:totalCourse){
             TableData_Course value = new TableData_Course(course.getCourseName(),course.getId(),course);
             courseData.add(value);
@@ -69,8 +78,10 @@ public class Main extends Application {
 
             // Give the controller access to the main app.
             totalCoursesTableController controller = loader.getController();
-
+            this.setUp();
             controller.setCourseHashMap(courseModelHashMap);
+            System.out.println("here"+totalCourse.size());
+            controller.setTotalCourses(this.totalCourse);
             controller.setMainApp(this);
             //controller.setText();
             primaryStage.setScene(scene);
@@ -80,17 +91,18 @@ public class Main extends Application {
         }
     }
 
-    public String getText(List<CourseModel> DoneCourses){
+    public String getText(List<CourseModel> DoneCourses, List<CourseModel> allCourses) throws Exception {
         String text = "";
-        List<CourseModel> tagetList = new ArrayList<>();
-        SearchController searchController = new SearchController(DoneCourses,tagetList,totalCourse);
+        System.out.println(allCourses.size());
+        searchController.setCoursesDone(DoneCourses);
+        searchController.setTotalCourses(allCourses);
         HashMap<Integer,List<CourseModel>> courseOrder = searchController.findAllCourseOrder();
+        System.out.println("here1");
         for(Integer i = 0; i < courseOrder.size(); i++ ){
             for(CourseModel course: courseOrder.get(i)){
                 text = text + "Level " + i + " " + course.getCourseName() + "\n";
             }
         }
-
         return text;
 
     }

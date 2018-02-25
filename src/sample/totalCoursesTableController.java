@@ -12,7 +12,9 @@ import sample.Model.CourseModel;
 import sample.Model.TableData_Course;
 import javafx.scene.control.TableView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -82,7 +84,13 @@ public class totalCoursesTableController {
 
         clearButton.setOnAction((ActionEvent e) -> this.resetTable());
 
-        submitButton.setOnAction((ActionEvent e) -> this.submitButton_handleclick());
+        submitButton.setOnAction((ActionEvent e) -> {
+            try {
+                this.submitButton_handleclick();
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            }
+        });
 
     }
 
@@ -117,7 +125,6 @@ public class totalCoursesTableController {
     private Button clearButton = new Button();
 
     public void resetTable(){
-        System.out.println("here");
         this.courseDone = new ArrayList<>();
         this.doneData = FXCollections.observableArrayList();
         this.text = "";
@@ -131,6 +138,8 @@ public class totalCoursesTableController {
     @FXML
     private Label resultLabel = new Label();
 
+    private List<CourseModel> totalCourses = new ArrayList<>();
+
     private String text;
 
     public void setValues(){
@@ -138,9 +147,30 @@ public class totalCoursesTableController {
 
     }
 
-    public void setText(){
-        this.text = this.mainApp.getText(courseDone);
+    public void setText() {
+        //System.out.println("hehehe"+this.totalCourses.size());
+        List<CourseModel> courses = this.getAllCourses();
+        try {
+            this.text = this.mainApp.getText(courseDone, courses);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
+
+    public List<CourseModel> getAllCourses(){
+        Collection<CourseModel> courseArray = this.courseHashMap.values();
+        List<CourseModel> courseList = new ArrayList<>();
+        courseList.addAll(courseArray);
+        return courseList;
+    }
+
+    public void setTotalCourses(List<CourseModel> totalCourses){
+        this.totalCourses = totalCourses;
+
+    }
+
+
 
 /*
 * Submit button
@@ -149,8 +179,7 @@ public class totalCoursesTableController {
     @FXML
     private Button submitButton= new Button();
 
-    public void submitButton_handleclick(){
-        System.out.println(text);
+    public void submitButton_handleclick() throws Exception {
         this.setText();
         this.setValues();
     }
